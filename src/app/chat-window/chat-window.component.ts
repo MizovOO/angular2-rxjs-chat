@@ -1,8 +1,8 @@
 import {
-  Component,
-  Inject,
-  ElementRef,
-  OnInit
+    Component,
+    Inject,
+    ElementRef,
+    OnInit
 } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -12,6 +12,7 @@ import { Thread } from '../thread/thread.model';
 import { ThreadsService } from '../thread/threads.service';
 import { Message } from '../message/message.model';
 import { MessagesService } from '../message/messages.service';
+
 
 @Component({
   selector: 'chat-window',
@@ -36,23 +37,23 @@ export class ChatWindowComponent implements OnInit {
     this.draftMessage = new Message();
 
     this.threadsService.currentThread.subscribe(
-      (thread: Thread) => {
-        this.currentThread = thread;
-      });
+        (thread: Thread) => {
+          this.currentThread = thread;
+        });
 
     this.UsersService.currentUser
-      .subscribe(
-        (user: User) => {
-          this.currentUser = user;
-        });
+        .subscribe(
+            (user: User) => {
+              this.currentUser = user;
+            });
 
     this.messages
-      .subscribe(
-        (messages: Array<Message>) => {
-          setTimeout(() => {
-            this.scrollToBottom();
-          });
-        });
+        .subscribe(
+            (messages: Array<Message>) => {
+              setTimeout(() => {
+                this.scrollToBottom();
+              });
+            });
   }
 
   onEnter(event: any): void {
@@ -66,13 +67,15 @@ export class ChatWindowComponent implements OnInit {
     m.thread = this.currentThread;
     m.isRead = true;
     m.sentAt = new Date();
-    this.messagesService.addMessage(m);
-    this.draftMessage = new Message();
+    if(m.text && m.text !== null){
+      this.messagesService.addMessage(m);
+      this.draftMessage = new Message();
+    }
   }
 
   scrollToBottom(): void {
     const scrollPane: any = this.el
-      .nativeElement.querySelector('.msg-container-base');
+        .nativeElement.querySelector('.msg-container-base');
     scrollPane.scrollTop = scrollPane.scrollHeight;
   }
 }
